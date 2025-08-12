@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <title>GAS CORS テスト</title>
+  <title>GAS ログインテスト</title>
 </head>
 <body>
   <h2>ログインテスト</h2>
@@ -15,22 +15,24 @@
     async function login() {
       const email = document.getElementById("email").value;
       const password = document.getElementById("password").value;
-      const url = "https://script.google.com/macros/s/AKfycbydykXHpRJR1CaXHq0bxhz3rHY_6eB-QuY3rC-DqkCl0Us8uk0wuOQBQZ-K76DB1r4_Tw/exec";
+
+      const url = "https://script.google.com/macros/s/AKfycbydykXHpRJR1CaXHq0bxhz3rHY_6eB-QuY3rC-DqkCl0Us8uk0wuOQBQZ-K76DB1r4_Tw/exec"; // あなたのGAS URL
 
       try {
         const res = await fetch(url, {
           method: "POST",
-          mode: "cors",
           headers: {
-            "Content-Type": "application/json"
+            // ⚠️ CORS回避のため JSONではなく text/plain
+            "Content-Type": "text/plain"
           },
           body: JSON.stringify({ email, password })
         });
 
         const data = await res.json();
-        document.getElementById("result").textContent = JSON.stringify(data);
+        document.getElementById("result").textContent = `認証結果: ${JSON.stringify(data)}`;
       } catch (err) {
         document.getElementById("result").textContent = "通信エラー: " + err.message;
+        console.error(err);
       }
     }
   </script>
