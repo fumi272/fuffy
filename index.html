@@ -20,15 +20,15 @@
 
       try {
         const res = await fetch(url, {
-          method: "POST",
-          headers: {
-            // 
-            "Content-Type": "text/plain"
-          },
-          body: JSON.stringify({ email, password })
-        });
+  method: "POST",
+  headers: {
+    "Content-Type": "text/plain"  // ← これが重要
+  },
+  body: JSON.stringify({ email, password })
+});
 
-        const data = await res.json();
+const data = await res.json(); // JSON で返ってくるので OK
+
         document.getElementById("result").textContent = `認証結果: ${JSON.stringify(data)}`;
       } catch (err) {
         document.getElementById("result").textContent = "通信エラー: " + err.message;
