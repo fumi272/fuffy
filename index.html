@@ -29,8 +29,8 @@
 
         const data = await res.json(); // JSON で返ってくる前提
         document.getElementById("result").textContent = data.success
-          ? `✅ ${data.message}`
-          : `❌ ${data.message}`;
+          ? `成功`
+          : `失敗`;
       } catch (err) {
         document.getElementById("result").textContent = "通信エラー: " + err.message;
         console.error(err);
