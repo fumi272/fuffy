@@ -1,213 +1,37 @@
-<div id="login-area">
-	<h2>ログイン</h2>
-	<input id="email" type="email" placeholder="メールアドレス"><br>
-	<input id="password" type="password" placeholder="パスワード"><br>
-	<button id="login-button">ログイン</button>
-	<p id="login-error" style="color: red;"></p>
-</div>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>GASログインテスト</title>
+</head>
+<body>
+  <h2>ログインテスト</h2>
+  <input type="email" id="email" placeholder="メールアドレス"><br>
+  <input type="password" id="password" placeholder="パスワード"><br>
+  <button onclick="login()">ログイン</button>
+  <p id="result"></p>
 
-<div id="chat-area" style="display: none;">
-	<!-- ログアウトボタンを追加 -->
-	<div style="text-align: right; margin: 10px;">
-		<button onclick="logout()">ログアウト</button>
-	</div>
-	<!-- 既存のチャットUI -->
-	<div id="chat">
-		<div class="message bot">
-			<div class="bubble">こんにちは。今日はどうしますか？<br>
-			(1)家の住所登録<br>
-			(2)職場の住所登録<br>
-			(3)
-			</div>
-		</div>
-	</div>
+  <script>
+    async function login() {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
 
-	<div id="input-area">
-		<textarea id="input" placeholder="メッセージを入力..." rows="1"></textarea>
-		<button id="send">送信</button>
-	</div>
+      try {
+        const res = await fetch('YOUR_GAS_DEPLOY_URL_HERE', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'text/plain' // CORS対策
+          },
+          body: JSON.stringify({ email, password })
+        });
 
-</div>
-
-<style>
-	body {
-		font-family: sans-serif;
-		background: #f5f5f5;
-		margin: 0;
-	}
-
-	#chat {
-		display: flex;
-		flex-direction: column;
-		gap: 10px;
-		padding: 10px;
-		height: 80vh;
-		overflow-y: auto;
-	}
-
-	.message {
-		display: flex;
-	}
-
-	.message.bot {
-		justify-content: flex-start;
-	}
-
-	.message.user {
-		justify-content: flex-end;
-	}
-
-	.bubble {
-		padding: 8px 12px;
-		border-radius: 12px;
-		max-width: 60%;
-		word-wrap: break-word;
-	}
-
-	.bot .bubble {
-		background: #ffffff;
-		border: 1px solid #ccc;
-	}
-
-	.user .bubble {
-		background: #9ee;
-	}
-
-	#input-area {
-		display: flex;
-		padding: 10px;
-		background: #fff;
-	}
-
-	#input {
-		flex: 1;
-		padding: 8px;
-		font-size: 14px;
-		resize: none;
-		line-height: 1.4;
-		border: 1px solid #ccc;
-		border-radius: 4px;
-	}
-
-	#send {
-		padding: 8px 12px;
-		margin-left: 5px;
-		background: #4CAF50;
-		color: white;
-		border: none;
-		cursor: pointer;
-	}
-
-	#send:hover {
-		background: #45a049;
-	}
-
-	#login-area {
-		padding: 20px;
-		max-width: 300px;
-		margin: 30px auto;
-		background: #fff;
-		border: 1px solid #ccc;
-		border-radius: 6px;
-	}
-	
-	#login-area input {
-		width: 100%;
-		padding: 8px;
-		margin: 8px 0;
-		box-sizing: border-box;
-	}
-</style>
-
-<script>
-	// ログイン処理
-	// https://your-auth-api.com/login は実際の外部APIエンドポイントに置き換えてください。
-	const loginBtn = document.getElementById('login-button');
-	const errorMsg = document.getElementById('login-error');
-
-	loginBtn.onclick = async () => {
-		const email = document.getElementById('email').value.trim();
-		const password = document.getElementById('password').value.trim();
-
-		if (!email || !password) {
-			errorMsg.textContent = 'メールアドレスとパスワードを入力してください。';
-			return;
-		}
-
-		try {
-			const res = await fetch('https://script.google.com/macros/s/AKfycbydykXHpRJR1CaXHq0bxhz3rHY_6eB-QuY3rC-DqkCl0Us8uk0wuOQBQZ-K76DB1r4_Tw/exec', {
-				method: 'POST',
-				headers: { 'Content-Type': 'text/plain' },
-				body: JSON.stringify({ "email": email, "password": password })
-			});
-
-			if (!res.ok) throw new Error('認証に失敗しました');
-
-			const data = await res.json();
-
-			// 例：アクセストークンを保存
-			localStorage.setItem('authToken', data.token);
-
-			// UI切り替え
-			document.getElementById('login-area').style.display = 'none';
-			document.getElementById('chat-area').style.display = 'block';
-		} catch (err) {
-			errorMsg.textContent = err.message;
-		}
-	};
-	// チャット処理
-	const chat = document.getElementById('chat');
-	const input = document.getElementById('input');
-	const sendBtn = document.getElementById('send');
-
-	sendBtn.onclick = () => {
-		const text = input.value.trim();
-		if (!text) return;
-
-		// ユーザーメッセージ
-		appendMessage(text, 'user');
-
-		// ボットの仮返信
-		setTimeout(() => {
-			appendMessage(botReply(text), 'bot');
-		}, 500);
-
-		input.value = '';
-	};
-
-	function botReply(userText) {
-		if (userText.includes('こんにちは')) return 'こんにちは！どうしましたか？';
-		if (userText.includes('ありがとう')) return 'どういたしまして！';
-		if (userText.includes('ログイン')) return 'ユーザーネームを入力してください。';
-		return '了解しました！';
-	}
-
-	function appendMessage(text, sender) {
-		const msg = document.createElement('div');
-		msg.className = `message ${sender}`;
-
-		const bubble = document.createElement('div');
-		bubble.className = 'bubble';
-		//bubble.textContent = text;
-		bubble.innerHTML = text.replace(/\n/g, '<br>');
-
-		msg.appendChild(bubble);
-		chat.appendChild(msg);
-		chat.scrollTop = chat.scrollHeight; // 自動スクロール
-	}
-
-	input.addEventListener('keydown', (e) => {
-		if (e.key === 'Enter' && !e.shiftKey) {
-			e.preventDefault(); // 改行をキャンセル
-			sendBtn.click(); // 通常送信
-		}
-		// Shift+Enter の場合は何もしない（そのまま改行される）
-	});
-
-	function logout() {
-		localStorage.removeItem('authToken');
-		document.getElementById('chat-area').style.display = 'none';
-		document.getElementById('login-area').style.display = 'block';
-	}
-</script>
-
+        const data = await res.json();
+        document.getElementById('result').textContent = `認証成功: ${JSON.stringify(data)}`;
+      } catch (err) {
+        document.getElementById('result').textContent = '通信エラー: ' + err.message;
+        console.error(err);
+      }
+    }
+  </script>
+</body>
+</html>
