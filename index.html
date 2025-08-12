@@ -22,7 +22,7 @@
         const res = await fetch(url, {
           method: "POST",
           headers: {
-            // ⚠️ CORS回避のため JSONではなく text/plain
+            // 
             "Content-Type": "text/plain"
           },
           body: JSON.stringify({ email, password })
