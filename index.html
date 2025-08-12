@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <title>GASログインテスト</title>
+  <title>GAS CORS POST Test</title>
 </head>
 <body>
   <h2>ログインテスト</h2>
@@ -21,18 +21,16 @@
         const res = await fetch(url, {
           method: "POST",
           mode: "cors",
-          headers: {
-            "Content-Type": "application/json"
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email, password })
         });
 
-        const data = await res.json();
-        if (data.success) {
-          document.getElementById("result").textContent = data.message;
-        } else {
-          document.getElementById("result").textContent = data.message;
+        if (!res.ok) {
+          throw new Error("HTTP error! status: " + res.status);
         }
+
+        const data = await res.json();
+        document.getElementById("result").textContent = JSON.stringify(data);
       } catch (err) {
         document.getElementById("result").textContent = "通信エラー: " + err.message;
       }
