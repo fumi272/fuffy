@@ -1,24 +1,30 @@
-<script>
-function login() {
-  fetch("https://script.google.com/macros/s/AKfycbxxx.../exec", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      email: "test@example.com",
-      password: "1234"
-    })
-  })
-  .then(response => response.json())
-  .then(data => {
-    alert(data.message); // ログイン成功 など
-  })
-  .catch(error => {
-    console.error("通信エラー:", error);
-    alert("通信エラー");
-  });
-}
-</script>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>GAS API 呼び出しテスト</title>
+</head>
+<body>
+  <h1>Google Apps Script API 呼び出し</h1>
+  <button id="callBtn">API 呼び出し</button>
+  <pre id="result"></pre>
 
-<button onclick="login()">ログイン</button>
+  <script>
+    const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbydykXHpRJR1CaXHq0bxhz3rHY_6eB-QuY3rC-DqkCl0Us8uk0wuOQBQZ-K76DB1r4_Tw/exec";
+
+    document.getElementById("callBtn").addEventListener("click", () => {
+      fetch(GAS_WEB_APP_URL)
+        .then(response => {
+          if (!response.ok) throw new Error("HTTP error " + response.status);
+          return response.json();
+        })
+        .then(data => {
+          document.getElementById("result").textContent = JSON.stringify(data, null, 2);
+        })
+        .catch(err => {
+          document.getElementById("result").textContent = "エラー: " + err.message;
+        });
+    });
+  </script>
+</body>
+</html>
