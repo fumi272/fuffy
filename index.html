@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <title>GAS CORS テスト</title>
+  <meta charset="UTF-8">
+  <title>ログインテスト</title>
 </head>
 <body>
-  <h2>ログインテスト</h2>
-  <input type="email" id="email" placeholder="メールアドレス" value="test@example.com" /><br />
-  <input type="password" id="password" placeholder="パスワード" value="1234" /><br />
+  <h2>ログインフォーム</h2>
+  <input type="email" id="email" placeholder="メールアドレス" value="test@example.com"><br>
+  <input type="password" id="password" placeholder="パスワード" value="1234"><br>
   <button onclick="login()">ログイン</button>
   <p id="result"></p>
 
@@ -15,14 +15,14 @@
     async function login() {
       const email = document.getElementById("email").value;
       const password = document.getElementById("password").value;
+
       const url = "https://script.google.com/macros/s/AKfycbydykXHpRJR1CaXHq0bxhz3rHY_6eB-QuY3rC-DqkCl0Us8uk0wuOQBQZ-K76DB1r4_Tw/exec";
 
       try {
         const res = await fetch(url, {
           method: "POST",
-          mode: "cors",
           headers: {
-            "Content-Type": "text/plain"  // ここが重要。application/jsonはNG
+            "Content-Type": "application/json"
           },
           body: JSON.stringify({ email, password })
         });
