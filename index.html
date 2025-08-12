@@ -2,13 +2,14 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <title>GAS CORS POST Test</title>
+  <title>GAS CORS テスト</title>
 </head>
 <body>
-  <input id="email" placeholder="email" value="test@example.com" />
-  <input id="password" placeholder="password" value="1234" />
+  <h2>ログインテスト</h2>
+  <input type="email" id="email" placeholder="メールアドレス" value="test@example.com" /><br />
+  <input type="password" id="password" placeholder="パスワード" value="1234" /><br />
   <button onclick="login()">ログイン</button>
-  <pre id="result"></pre>
+  <p id="result"></p>
 
   <script>
     async function login() {
@@ -20,15 +21,18 @@
         const res = await fetch(url, {
           method: "POST",
           mode: "cors",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "text/plain"  // JSONではなくtext/plainを推奨
+          },
           body: JSON.stringify({ email, password })
         });
 
-        if (!res.ok) throw new Error("HTTP status " + res.status);
+        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+
         const data = await res.json();
-        document.getElementById("result").textContent = JSON.stringify(data, null, 2);
-      } catch (e) {
-        document.getElementById("result").textContent = "通信エラー: " + e.message;
+        document.getElementById("result").textContent = JSON.stringify(data);
+      } catch (err) {
+        document.getElementById("result").textContent = "通信エラー: " + err.message;
       }
     }
   </script>
