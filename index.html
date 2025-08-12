@@ -1,25 +1,26 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <title>GASログインテスト</title>
+  <meta charset="UTF-8" />
+  <title>GAS CORS テスト</title>
 </head>
 <body>
   <h2>ログインテスト</h2>
-  <input type="email" id="email" placeholder="メールアドレス"><br>
-  <input type="password" id="password" placeholder="パスワード"><br>
+  <input type="email" id="email" placeholder="メールアドレス" value="test@example.com" /><br />
+  <input type="password" id="password" placeholder="パスワード" value="1234" /><br />
   <button onclick="login()">ログイン</button>
   <p id="result"></p>
 
   <script>
     async function login() {
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      const url = "【ここにGASウェブアプリのURLを貼り付け】";
 
       try {
-        const res = await fetch("https://script.google.com/macros/s/【あなたのデプロイURL】/exec", {
+        const res = await fetch(url, {
           method: "POST",
-          mode: 'cors', // ← 明示的に設定
+          mode: "cors",
           headers: {
             "Content-Type": "application/json"
           },
@@ -27,10 +28,9 @@
         });
 
         const data = await res.json();
-        document.getElementById("result").textContent = `成功: ${JSON.stringify(data)}`;
+        document.getElementById("result").textContent = JSON.stringify(data);
       } catch (err) {
         document.getElementById("result").textContent = "通信エラー: " + err.message;
-        console.error(err);
       }
     }
   </script>
