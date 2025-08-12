@@ -22,12 +22,10 @@
           method: "POST",
           mode: "cors",
           headers: {
-            "Content-Type": "text/plain"  // JSONではなくtext/plainを推奨
+            "Content-Type": "text/plain"  // ここが重要。application/jsonはNG
           },
           body: JSON.stringify({ email, password })
         });
-
-        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
 
         const data = await res.json();
         document.getElementById("result").textContent = JSON.stringify(data);
