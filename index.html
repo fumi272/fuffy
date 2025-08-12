@@ -6,8 +6,8 @@
 </head>
 <body>
   <h2>ログインテスト</h2>
-  <input type="email" id="email" placeholder="メールアドレス" value="test@example.com" /><br />
-  <input type="password" id="password" placeholder="パスワード" value="1234" /><br />
+  <input type="email" id="email" placeholder="メールアドレス" value="test@example.com"><br>
+  <input type="password" id="password" placeholder="パスワード" value="1234"><br>
   <button onclick="login()">ログイン</button>
   <p id="result"></p>
 
@@ -16,20 +16,21 @@
       const email = document.getElementById("email").value;
       const password = document.getElementById("password").value;
 
-      const url = "https://script.google.com/macros/s/AKfycbydykXHpRJR1CaXHq0bxhz3rHY_6eB-QuY3rC-DqkCl0Us8uk0wuOQBQZ-K76DB1r4_Tw/exec"; // あなたのGAS URL
+      const url = "https://script.google.com/macros/s/AKfycbydykXHpRJR1CaXHq0bxhz3rHY_6eB-QuY3rC-DqkCl0Us8uk0wuOQBQZ-K76DB1r4_Tw/exec";
 
       try {
         const res = await fetch(url, {
-  method: "POST",
-  headers: {
-    "Content-Type": "text/plain"  // ← これが重要
-  },
-  body: JSON.stringify({ email, password })
-});
+          method: "POST",
+          headers: {
+            "Content-Type": "text/plain"  // ← GAS との整合性のため JSON ではなく text/plain
+          },
+          body: JSON.stringify({ email, password })
+        });
 
-const data = await res.json(); // JSON で返ってくるので OK
-
-        document.getElementById("result").textContent = `認証結果: ${JSON.stringify(data)}`;
+        const data = await res.json(); // JSON で返ってくる前提
+        document.getElementById("result").textContent = data.success
+          ? `✅ ${data.message}`
+          : `❌ ${data.message}`;
       } catch (err) {
         document.getElementById("result").textContent = "通信エラー: " + err.message;
         console.error(err);
