@@ -5,11 +5,10 @@
   <title>GAS CORS POST Test</title>
 </head>
 <body>
-  <h2>ログインテスト</h2>
-  <input type="email" id="email" placeholder="メールアドレス" value="test@example.com" /><br />
-  <input type="password" id="password" placeholder="パスワード" value="1234" /><br />
+  <input id="email" placeholder="email" value="test@example.com" />
+  <input id="password" placeholder="password" value="1234" />
   <button onclick="login()">ログイン</button>
-  <p id="result"></p>
+  <pre id="result"></pre>
 
   <script>
     async function login() {
@@ -25,14 +24,11 @@
           body: JSON.stringify({ email, password })
         });
 
-        if (!res.ok) {
-          throw new Error("HTTP error! status: " + res.status);
-        }
-
+        if (!res.ok) throw new Error("HTTP status " + res.status);
         const data = await res.json();
-        document.getElementById("result").textContent = JSON.stringify(data);
-      } catch (err) {
-        document.getElementById("result").textContent = "通信エラー: " + err.message;
+        document.getElementById("result").textContent = JSON.stringify(data, null, 2);
+      } catch (e) {
+        document.getElementById("result").textContent = "通信エラー: " + e.message;
       }
     }
   </script>
