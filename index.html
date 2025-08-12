@@ -137,7 +137,7 @@
 		try {
 			const res = await fetch('https://script.google.com/macros/s/AKfycbydykXHpRJR1CaXHq0bxhz3rHY_6eB-QuY3rC-DqkCl0Us8uk0wuOQBQZ-K76DB1r4_Tw/exec', {
 				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
+				headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
 				body: JSON.stringify({ "email": email, "password": password })
 			});
 
