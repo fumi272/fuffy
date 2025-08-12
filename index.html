@@ -17,18 +17,18 @@
       const password = document.getElementById('password').value;
 
       try {
-        const res = await fetch('https://script.google.com/macros/s/AKfycbydykXHpRJR1CaXHq0bxhz3rHY_6eB-QuY3rC-DqkCl0Us8uk0wuOQBQZ-K76DB1r4_Tw/exec', {
-          method: 'POST',
+        const res = await fetch("https://script.google.com/macros/s/【あなたのデプロイURL】/exec", {
+          method: "POST",
           headers: {
-            'Content-Type': 'text/plain' // CORS対策
+            "Content-Type": "application/json"
           },
           body: JSON.stringify({ email, password })
         });
 
         const data = await res.json();
-        document.getElementById('result').textContent = `認証成功: ${JSON.stringify(data)}`;
+        document.getElementById("result").textContent = `成功: ${JSON.stringify(data)}`;
       } catch (err) {
-        document.getElementById('result').textContent = '通信エラー: ' + err.message;
+        document.getElementById("result").textContent = "通信エラー: " + err.message;
         console.error(err);
       }
     }
